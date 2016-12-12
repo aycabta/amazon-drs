@@ -1,17 +1,21 @@
+require 'erb'
 require 'launchy'
 
 module Adash
   class WaitIndefinitely
-    def initialize
+    def initialize(device_model, serial, is_test: false)
       require 'webrick'
       @port = 55582
+      @device_model = device_model
+      @serial = serial
+      @is_test = is_test
       @code_box = Queue.new
       @code_cv = ConditionVariable.new
       @code_mutex = Mutex.new
       @server = WEBrick::HTTPServer.new({ :BindAddress => '127.0.0.1', :Port => @port })
       @server.mount_proc('/getting_started', proc { |req, res|
         res.content_type = 'text/html'
-        content = %Q`<p>Please go <a href="#{amazon_authorization_url('sample device model', 'aaaa00001')}">initial tour</a>.</p>`
+        content = %Q`<p>Please go <a href="#{amazon_authorization_url(@device_model, @serial)}">initial tour</a>.</p>`
         res.body = "<html><body>\n#{content}\n</body></html>"
       })
       @server.mount_proc('/', proc { |req, res|
