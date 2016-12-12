@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# vim: set filetype=ruby:
+$: << File.expand_path("../../lib/", __FILE__)
+
+require 'adash'
+require 'adash/wait_indefinitely'
+require 'optparse'
+
+opt = OptionParser.new
+
+opt.on('-h', '--help') { puts 'help' }
+
+argv = opt.order(ARGV)
+unless argv.empty?
+  subcmd = argv.shift
+  case subcmd
+  when 'init'
+    init_opt = OptionParser.new
+    init_opt.on('-h', '--help') { puts 'init help' }
+    init_opt.parse(argv)
+    wi = Adash::WaitIndefinitely.new
+    Signal.trap(:INT){ wi.shutdown }
+    code = wi.get_code
+  else
+    $stderr.puts "no such subcommand: #{k}"
+    exit 1
+  end
+end
+
