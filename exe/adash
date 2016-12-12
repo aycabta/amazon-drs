@@ -70,8 +70,9 @@ unless argv.empty?
     end
   when 'list'
     data = get_data
-    data['authorized_devices'].each do |device|
-      puts '----'
+    data['authorized_devices'].each_index do |index|
+      device = data['authorized_devices'][index]
+      puts "---- #{index}"
       puts "* device_model: #{device['device_model']}"
       puts "  serial: #{device['serial']}"
       puts '  THIS DEVICE IS TEST PURCHASE MODE' if device['is_test']
