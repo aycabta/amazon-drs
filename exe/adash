@@ -8,9 +8,26 @@ require 'optparse'
 require 'fileutils'
 require 'yaml'
 
+CONFIG_PATH = "#{Dir.home}/.config/adash"
+
 opt = OptionParser.new
 
 opt.on('-h', '--help') { puts 'help' }
+
+def generate_serial(device_model)
+  orig = [('a'..'z'), ('A'..'Z'), ('0'..'9')].map { |i| i.to_a }.flatten
+  random_suffix = (0...16).map { orig[rand(orig.size)] }.join
+  "#{device_model}_#{Time.now.to_i}_#{random_suffix}"
+end
+
+def get_data
+  if File.exist?("#{CONFIG_PATH}/config")
+    data = YAML.load_file("#{CONFIG_PATH}/config").to_h
+  else
+    data = { 'authorized_devices' => [] }
+  end
+  data
+end
 
 argv = opt.order(ARGV)
 unless argv.empty?
@@ -19,13 +36,26 @@ unless argv.empty?
   when 'init'
     init_opt = OptionParser.new
     init_opt.on('-h', '--help') { puts 'init help' }
-    init_opt.parse(argv)
-    wi = Adash::WaitIndefinitely.new
+    argv = init_opt.parse(argv)
+    if argv.size < 1
+      puts 'Usage: adash init device_model'
+      exit 2
+    end
+    device_model = argv.shift
+    serial = generate_serial(device_model)
+    data = get_data
+    wi = Adash::WaitIndefinitely.new(device_model, serial)
     Signal.trap(:INT){ wi.shutdown }
     code = wi.get_code
-    FileUtils.mkdir_p("#{Dir.home}/.config/adash")
+    FileUtils.mkdir_p(CONFIG_PATH)
+    new_device = {
+      'device_model' => device_model,
+      'serial' => serial,
+      'authorization_code' => code
+    }
+    data['authorized_devices'] << new_device
     open("#{Dir.home}/.config/adash/config", 'w') do |f|
-      f.write({ 'authorization_code' => code }.to_yaml)
+      f.write(data.to_yaml)
     end
   else
     $stderr.puts "no such subcommand: #{k}"
