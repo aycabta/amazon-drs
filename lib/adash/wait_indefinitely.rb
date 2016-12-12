@@ -1,5 +1,6 @@
 require 'erb'
 require 'launchy'
+require 'adash/client'
 
 module Adash
   class WaitIndefinitely
@@ -44,7 +45,7 @@ module Adash
     def amazon_authorization_url(device_model, serial)
       base = 'https://www.amazon.com/ap/oa?'
       params = {
-        client_id: 'amzn1.application-oa2-client.b5c87429af104636bd7ae83df68383e1',
+        client_id: Adash::Client.client_id,
         scope: 'dash:replenish',
         response_type: 'code',
         redirect_uri: @redirect_uri,
