@@ -68,6 +68,14 @@ unless argv.empty?
     open("#{Dir.home}/.config/adash/config", 'w') do |f|
       f.write(data.to_yaml)
     end
+  when 'list'
+    data = get_data
+    data['authorized_devices'].each do |device|
+      puts '----'
+      puts "* device_model: #{device['device_model']}"
+      puts "  serial: #{device['serial']}"
+      puts '  THIS DEVICE IS TEST PURCHASE MODE' if device['is_test']
+    end
   else
     $stderr.puts "no such subcommand: #{k}"
     exit 1
