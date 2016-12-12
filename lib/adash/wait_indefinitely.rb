@@ -19,7 +19,7 @@ module Adash
         if req.query.include?('code')
           content = '<p>Done. Please close this tab.</p>'
           @code_mutex.synchronize {
-            @code_box.push(req.query['code'])
+            @code_box.push(req.query['code'].to_s)
             @code_cv.signal
           }
         else
