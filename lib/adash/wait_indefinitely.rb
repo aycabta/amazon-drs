@@ -3,10 +3,11 @@ module Adash
   class WaitIndefinitely
     def initialize
       require 'webrick'
+      @port = 55582
       @code_box = Queue.new
       @code_cv = ConditionVariable.new
       @code_mutex = Mutex.new
-      @server = WEBrick::HTTPServer.new({ :BindAddress => '127.0.0.1', :Port => 55582 })
+      @server = WEBrick::HTTPServer.new({ :BindAddress => '127.0.0.1', :Port => @port })
       @server.mount_proc('/', proc { |req, res|
         res.content_type = 'text/html'
         if req.query.include?('code')
