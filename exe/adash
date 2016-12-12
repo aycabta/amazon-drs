@@ -36,6 +36,11 @@ unless argv.empty?
   when 'init'
     init_opt = OptionParser.new
     init_opt.on('-h', '--help') { puts 'init help' }
+    is_test = false
+    init_opt.on('-t', '--test') {
+      is_test = true
+      puts 'TEST MODE'
+    }
     argv = init_opt.parse(argv)
     if argv.size < 1
       puts 'Usage: adash init device_model'
@@ -53,6 +58,7 @@ unless argv.empty?
       'serial' => serial,
       'authorization_code' => code
     }
+    new_device['is_test'] = true if is_test
     data['authorized_devices'] << new_device
     open("#{Dir.home}/.config/adash/config", 'w') do |f|
       f.write(data.to_yaml)
