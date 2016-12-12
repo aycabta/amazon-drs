@@ -3,12 +3,15 @@ require 'launchy'
 
 module Adash
   class WaitIndefinitely
+    attr_reader :redirect_uri
+
     def initialize(device_model, serial, is_test: false)
       require 'webrick'
       @port = 55582
       @device_model = device_model
       @serial = serial
       @is_test = is_test
+      @redirect_uri = "http://localhost:#{@port}/"
       @code_box = Queue.new
       @code_cv = ConditionVariable.new
       @code_mutex = Mutex.new
@@ -44,7 +47,7 @@ module Adash
         client_id: 'amzn1.application-oa2-client.b5c87429af104636bd7ae83df68383e1',
         scope: 'dash:replenish',
         response_type: 'code',
-        redirect_uri: "http://localhost:#{@port}/",
+        redirect_uri: @redirect_uri,
         scope_data: %Q`{"dash:replenish":{"device_model":"#{device_model}","serial":"#{serial}"#{ ',"is_test_device":true' if @is_test }}}`
       }
       "#{base}#{params.map{ |k, v| "#{k}=#{v}" }.join(?&)}"
