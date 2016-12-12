@@ -16,7 +16,11 @@ module Adash
     end
 
     def deregistrate_device(device_model, serial)
-      request(:delete, "https://#{@drs_host}/deviceModels/#{deviceModels}/devices/#{serial}/registration")
+      headers = {
+        'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsDeregisterResult@1.0',
+        'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeregisterInput@1.0'
+      }
+      request(:delete, "https://#{@drs_host}/deviceModels/#{device_model}/devices/#{serial}/registration", headers: headers)
     end
 
     def get_token
@@ -27,7 +31,7 @@ module Adash
         client_secret: @@client_secret,
         redirect_uri: 'http://localhost:55582/'
       }
-      request(:post, "https://#{@amazon_host}/auth/o2/token", params)
+      request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
 
     open("#{File.expand_path('../../../data', __FILE__)}/client", 'r') do |f|
@@ -45,7 +49,7 @@ module Adash
 
   private
 
-    def request(method, url, params = {})
+    def request(method, url, headers: {}, params: {})
       uri = URI.parse(url)
       if params.any?{ |key, value| value.is_a?(Enumerable) }
         converted_params = []
@@ -73,8 +77,9 @@ module Adash
       end
       request['Content-Type'] = 'application/x-www-form-urlencoded'
       request['User-Agent'] = @user_agent
-      request['x-amzn-accept-type'] = 'com.amazon.dash.replenishment.DrsReplenishResult@1.0'
-      request['x-amzn-type-version'] = 'com.amazon.dash.replenishment.DrsReplenishInput@1.0'
+      headers.each do |key, value|
+        request[key] = value
+      end
       if not @access_token.nil?
         request["Authorization"] = "Bearer #{@access_token}"
       end
