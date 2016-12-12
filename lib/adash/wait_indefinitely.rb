@@ -16,7 +16,7 @@ module Adash
       @server.mount_proc('/getting_started', proc { |req, res|
         res.content_type = 'text/html'
         content = %Q`<p>Please go <a href="#{ERB::Util.html_escape(amazon_authorization_url(@device_model, @serial))}">initial tour</a>.</p>`
-        res.body = "<html><body>\n#{content}\n</body></html>"
+        render(content)
       })
       @server.mount_proc('/', proc { |req, res|
         res.content_type = 'text/html'
@@ -29,9 +29,13 @@ module Adash
         else
           content = "<dl>\n" + req.query.map { |k, v| "<dt>#{k}</dt><dd>#{v}</dd>" }.join("\n") + "\n</dl>"
         end
-        res.body = "<html><body>\n#{content}\n</body></html>"
+        res.body = render(content)
       })
       @server
+    end
+
+    def render(content)
+      "<html><body>\n#{content}\n</body></html>"
     end
 
     def amazon_authorization_url(device_model, serial)
