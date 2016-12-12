@@ -5,6 +5,8 @@ $: << File.expand_path("../../lib/", __FILE__)
 require 'adash'
 require 'adash/wait_indefinitely'
 require 'optparse'
+require 'fileutils'
+require 'yaml'
 
 opt = OptionParser.new
 
@@ -21,6 +23,10 @@ unless argv.empty?
     wi = Adash::WaitIndefinitely.new
     Signal.trap(:INT){ wi.shutdown }
     code = wi.get_code
+    FileUtils.mkdir_p('~/.config/adash')
+    open('~/.config/adash/config') do |f|
+      f.write({ authorization_code: code }.to_yaml)
+    end
   else
     $stderr.puts "no such subcommand: #{k}"
     exit 1
