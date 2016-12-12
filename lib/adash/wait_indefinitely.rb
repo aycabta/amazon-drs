@@ -41,7 +41,7 @@ module Adash
         scope: 'dash:replenish',
         response_type: 'code',
         redirect_uri: "http://localhost:#{@port}/",
-        scope_data: %Q`{"dash:replenish":{"device_model":"#{device_model}","serial":"#{serial}","is_test_device":true}}`
+        scope_data: %Q`{"dash:replenish":{"device_model":"#{device_model}","serial":"#{serial}"#{ ',"is_test_device":true' if @is_test }}}`
       }
       "#{base}#{params.map{ |k, v| "#{k}=#{v}" }.join(?&)}"
     end
