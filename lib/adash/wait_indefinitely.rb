@@ -15,7 +15,7 @@ module Adash
       @server = WEBrick::HTTPServer.new({ :BindAddress => '127.0.0.1', :Port => @port })
       @server.mount_proc('/getting_started', proc { |req, res|
         res.content_type = 'text/html'
-        content = %Q`<p>Please go <a href="#{amazon_authorization_url(@device_model, @serial)}">initial tour</a>.</p>`
+        content = %Q`<p>Please go <a href="#{ERB::Util.html_escape(amazon_authorization_url(@device_model, @serial))}">initial tour</a>.</p>`
         res.body = "<html><body>\n#{content}\n</body></html>"
       })
       @server.mount_proc('/', proc { |req, res|
@@ -43,7 +43,7 @@ module Adash
         redirect_uri: "http://localhost:#{@port}/",
         scope_data: %Q`{"dash:replenish":{"device_model":"#{device_model}","serial":"#{serial}"#{ ',"is_test_device":true' if @is_test }}}`
       }
-      ERB::Util.html_escape("#{base}#{params.map{ |k, v| "#{k}=#{v}" }.join(?&)}")
+      "#{base}#{params.map{ |k, v| "#{k}=#{v}" }.join(?&)}"
     end
 
     def get_code
