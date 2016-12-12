@@ -23,8 +23,8 @@ unless argv.empty?
     wi = Adash::WaitIndefinitely.new
     Signal.trap(:INT){ wi.shutdown }
     code = wi.get_code
-    FileUtils.mkdir_p('~/.config/adash')
-    open('~/.config/adash/config') do |f|
+    FileUtils.mkdir_p("#{Dir.home}/.config/adash")
+    open("#{Dir.home}/.config/adash/config", 'w') do |f|
       f.write({ authorization_code: code }.to_yaml)
     end
   else
