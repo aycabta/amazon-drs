@@ -25,7 +25,7 @@ unless argv.empty?
     code = wi.get_code
     FileUtils.mkdir_p("#{Dir.home}/.config/adash")
     open("#{Dir.home}/.config/adash/config", 'w') do |f|
-      f.write({ authorization_code: code }.to_yaml)
+      f.write({ 'authorization_code' => code }.to_yaml)
     end
   else
     $stderr.puts "no such subcommand: #{k}"
