@@ -61,7 +61,8 @@ unless argv.empty?
     new_device = {
       'device_model' => device_model,
       'serial' => serial,
-      'authorization_code' => code
+      'authorization_code' => code,
+      'redirect_uri' => wi.redirect_uri
     }
     new_device['is_test'] = true if is_test
     data['authorized_devices'] << new_device
