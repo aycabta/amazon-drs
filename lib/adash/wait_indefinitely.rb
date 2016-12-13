@@ -20,7 +20,7 @@ module Adash
       @server.mount_proc('/getting_started', proc { |req, res|
         res.content_type = 'text/html'
         content = %Q`<p>Please go <a href="#{ERB::Util.html_escape(amazon_authorization_url(@device_model, @serial))}">initial tour</a>.</p>`
-        render(content)
+        res.body = render(content)
       })
       @server.mount_proc('/', proc { |req, res|
         res.content_type = 'text/html'
