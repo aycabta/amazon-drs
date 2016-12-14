@@ -1,6 +1,7 @@
 require 'net/http'
 require 'uri'
 require 'json'
+require 'yaml'
 require 'adash/config'
 
 module Adash
@@ -24,10 +25,40 @@ module Adash
       request(:delete, "https://#{@drs_host}/deviceModels/#{device_model}/devices/#{serial}/registration", headers: headers)
     end
 
-    def get_token
+    def get_token(device_model)
+      config_path = "#{Dir.home}/.config/adash/config"
+      if File.exist?(config_path)
+        data = YAML.load_file(open(config_path, 'r'))
+        i = data['authorized_devices'].find_index { |d| d['device_model'] == device_model }
+        device = data['authorized_devices'][i]
+        if device['access_token']
+          device['access_token']
+        elsif device['authorization_code']
+          resp = request_token(device['authorization_code'])
+          resp_json = JSON.parse(resp.body)
+          if resp_json['error']
+            puts resp_json['error']
+            puts resp_json['error_description']
+            nil
+          else
+            device['access_token'] = resp_json['access_token']
+            device['refresh_token'] = resp_json['refresh_token']
+            data['authorized_devices'][i] = device
+            open(config_path, 'w') do |f|
+              f.write(data.to_yaml)
+            end
+            device['access_token']
+          end
+        end
+      else
+        nil
+      end
+    end
+
+    def request_token(authorization_code)
       params = {
         grant_type: 'authorization_code',
-        code: '',
+        code: authorization_code,
         client_id: Adash::Config.client_id,
         client_secret: Adash::Config.client_secret,
         redirect_uri: "http://localhost:#{Adash::Config.redirect_port}/"
