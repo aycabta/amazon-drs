@@ -6,6 +6,7 @@ require 'adash/config'
 
 module Adash
   class Client
+    attr_accessor :access_token
     attr_writer :user_agent
 
     def initialize
