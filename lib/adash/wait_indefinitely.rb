@@ -1,6 +1,7 @@
 require 'erb'
 require 'launchy'
 require 'adash/client'
+require 'adash/config'
 
 module Adash
   class WaitIndefinitely
@@ -8,15 +9,14 @@ module Adash
 
     def initialize(device_model, serial, is_test: false)
       require 'webrick'
-      @port = 55582
       @device_model = device_model
       @serial = serial
       @is_test = is_test
-      @redirect_uri = "http://localhost:#{@port}/"
+      @redirect_uri = "http://localhost:#{Adash::Config.redirect_port}/"
       @code_box = Queue.new
       @code_cv = ConditionVariable.new
       @code_mutex = Mutex.new
-      @server = WEBrick::HTTPServer.new({ :BindAddress => '127.0.0.1', :Port => @port })
+      @server = WEBrick::HTTPServer.new({ :BindAddress => '127.0.0.1', :Port => Adash::Config.redirect_port })
       @server.mount_proc('/getting_started', proc { |req, res|
         res.content_type = 'text/html'
         content = %Q`<p>Please go <a href="#{ERB::Util.html_escape(amazon_authorization_url(@device_model, @serial))}">initial tour</a>.</p>`
@@ -45,10 +45,10 @@ module Adash
     def amazon_authorization_url(device_model, serial)
       base = 'https://www.amazon.com/ap/oa?'
       params = {
-        client_id: Adash::Client.client_id,
+        client_id: Adash::Config.client_id,
         scope: 'dash:replenish',
         response_type: 'code',
-        redirect_uri: @redirect_uri,
+        redirect_uri: URI.encode_www_form_component(@redirect_uri),
         scope_data: %Q`{"dash:replenish":{"device_model":"#{device_model}","serial":"#{serial}"#{ ',"is_test_device":true' if @is_test }}}`
       }
       "#{base}#{params.map{ |k, v| "#{k}=#{v}" }.join(?&)}"

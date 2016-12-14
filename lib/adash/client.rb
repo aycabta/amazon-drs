@@ -1,6 +1,7 @@
 require 'net/http'
 require 'uri'
 require 'json'
+require 'adash/config'
 
 module Adash
   class Client
@@ -27,24 +28,11 @@ module Adash
       params = {
         grant_type: 'authorization_code',
         code: '',
-        client_id: @@client_id,
-        client_secret: @@client_secret,
-        redirect_uri: 'http://localhost:55582/'
+        client_id: Adash::Config.client_id,
+        client_secret: Adash::Config.client_secret,
+        redirect_uri: "http://localhost:#{Adash::Config.redirect_port}/"
       }
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
-    end
-
-    open("#{File.expand_path('../../../data', __FILE__)}/client", 'r') do |f|
-      @@client_id = f.readline.chomp
-      @@client_secret = f.readline.chomp
-    end
-
-    def self.client_id
-      @@client_id
-    end
-
-    def self.client_secret
-      @@client_secret
     end
 
   private
