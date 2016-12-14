@@ -1,3 +1,4 @@
+require 'uri'
 require 'erb'
 require 'launchy'
 require 'adash/client'
