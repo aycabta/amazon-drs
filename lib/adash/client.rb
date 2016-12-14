@@ -9,9 +9,25 @@ module Adash
     attr_accessor :access_token
     attr_writer :user_agent
 
-    def initialize
+    def initialize(device_model)
       @drs_host = 'dash-replenishment-service-na.amazon.com'
       @amazon_host = 'api.amazon.com'
+      @device_model = device_model
+      @serial = nil
+      @authorization_code = nil
+      @redirect_uri = nil
+      @access_token = nil
+      @refresh_token = nil
+      credentials = get_credentials
+      i = credentials['authorized_devices'].find_index { |d| d['device_model'] == @device_model }
+      if i
+        device = credentials['authorized_devices'][i]
+        @serial = device['serial']
+        @authorization_code = device['authorization_code']
+        @redirect_uri = device['redirect_uri']
+        @access_token = device['access_token']
+        @refresh_token = device['refresh_token']
+      end
     end
 
     def user_agent
