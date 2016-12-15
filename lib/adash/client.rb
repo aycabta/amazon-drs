@@ -109,17 +109,13 @@ module Adash
       else
         credentials['authorized_devices'] << device
       end
-      open(Adash::Config.credentials_path, 'w') do |f|
-        f.write(credentials.to_yaml)
-      end
+      save_credentials(credentials)
     end
 
     def save_credentials_without_device_model(device_model)
       credentials = get_credentials
       credentials['authorized_devices'] = credentials['authorized_devices'].delete_if { |d| d['device_model'] == @device_model }
-      open(Adash::Config.credentials_path, 'w') do |f|
-        f.write(credentials.to_yaml)
-      end
+      save_credentials(credentials)
     end
 
     def request(method, url, headers: {}, params: {})
