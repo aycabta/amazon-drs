@@ -43,8 +43,10 @@ module Adash
         'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsDeregisterResult@1.0',
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeregisterInput@1.0'
       }
-      request(:delete, "https://#{@drs_host}/deviceModels/#{@device_model}/devices/#{@serial}/registration", headers: headers)
+      path = "/deviceModels/#{@device_model}/devices/#{@serial}/registration"
+      response = request_drs(:delete, path, headers: headers)
       save_credentials_without_device_model(@device_model)
+      response
     end
 
     def get_token
