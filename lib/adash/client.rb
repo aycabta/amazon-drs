@@ -66,6 +66,8 @@ module Adash
       end
     end
 
+  private
+
     def request_token
       params = {
         grant_type: 'authorization_code',
@@ -76,8 +78,6 @@ module Adash
       }
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
-
-  private
 
     def get_credentials
       if File.exist?(Adash::Config.credentials_path)
