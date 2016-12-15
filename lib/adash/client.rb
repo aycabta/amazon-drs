@@ -4,6 +4,10 @@ require 'json'
 require 'yaml'
 require 'adash/config'
 
+class Net::HTTPResponse
+    attr_accessor :json
+end
+
 module Adash
   class Client
     attr_accessor :access_token
@@ -154,7 +158,8 @@ module Adash
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       response = http.request(request)
-      JSON.parse(response.body)
+      response.json = JSON.parse(response.body)
+      response
     end
   end
 end
