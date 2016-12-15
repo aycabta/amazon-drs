@@ -40,6 +40,7 @@ module Adash
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeregisterInput@1.0'
       }
       request(:delete, "https://#{@drs_host}/deviceModels/#{@device_model}/devices/#{@serial}/registration", headers: headers)
+      save_credentials_without_device_model(@device_model)
     end
 
     def get_token
@@ -108,6 +109,14 @@ module Adash
       else
         credentials['authorized_devices'] << device
       end
+      open(Adash::Config.credentials_path, 'w') do |f|
+        f.write(credentials.to_yaml)
+      end
+    end
+
+    def save_credentials_without_device_model(device_model)
+      credentials = get_credentials
+      credentials['authorized_devices'] = credentials['authorized_devices'].delete_if { |d| d['device_model'] == @device_model }
       open(Adash::Config.credentials_path, 'w') do |f|
         f.write(credentials.to_yaml)
       end
