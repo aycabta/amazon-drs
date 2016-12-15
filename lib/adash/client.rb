@@ -48,16 +48,15 @@ module Adash
         @access_token
       else
         resp = request_token
-        resp_json = JSON.parse(resp.body)
-        if resp_json['error']
-          puts resp_json['error']
-          puts resp_json['error_description']
+        if resp['error']
+          puts resp['error']
+          puts resp['error_description']
           nil
         else
           credentials = get_credentials
           device = get_device_from_credentials(credentials, @device_model)
-          @access_token = resp_json['access_token']
-          @refresh_token = resp_json['refresh_token']
+          @access_token = resp['access_token']
+          @refresh_token = resp['refresh_token']
           device['access_token'] = @access_token
           device['refresh_token'] = @refresh_token
           save_credentials_with_device(credentials, device)
@@ -155,6 +154,7 @@ module Adash
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       response = http.request(request)
+      JSON.parse(response.body)
     end
   end
 end
