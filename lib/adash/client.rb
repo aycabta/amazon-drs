@@ -34,12 +34,12 @@ module Adash
       @user_agent ||= "AdashRubyGem/#{Adash::VERSION}/#{RUBY_DESCRIPTION}"
     end
 
-    def deregistrate_device(device_model, serial)
+    def deregistrate_device
       headers = {
         'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsDeregisterResult@1.0',
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeregisterInput@1.0'
       }
-      request(:delete, "https://#{@drs_host}/deviceModels/#{device_model}/devices/#{serial}/registration", headers: headers)
+      request(:delete, "https://#{@drs_host}/deviceModels/#{@device_model}/devices/#{@serial}/registration", headers: headers)
     end
 
     def get_token
