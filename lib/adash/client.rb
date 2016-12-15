@@ -49,6 +49,15 @@ module Adash
       response
     end
 
+    def subscription_info
+      headers = {
+        'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsSubscriptionInfoResult@1.0',
+        'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsSubscriptionInfoInput@1.0'
+      }
+      path = '/subscriptionInfo'
+      request_drs(:get, path, headers: headers)
+    end
+
     def get_token
       if @access_token
         @access_token
