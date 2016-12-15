@@ -102,7 +102,7 @@ module Adash
     end
 
     def save_credentials_with_device(credentials, device)
-      i = credentials['authorized_devices'].find_index { |d| d['device_model'] == device_model }
+      i = credentials['authorized_devices'].find_index { |d| d['device_model'] == @device_model }
       if i
         credentials['authorized_devices'][i] = device
       else
