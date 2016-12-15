@@ -52,24 +52,56 @@ module Adash
         @access_token
       else
         resp = request_token
-        if resp['error']
-          puts resp['error']
-          puts resp['error_description']
-          nil
-        else
-          credentials = get_credentials
-          device = get_device_from_credentials(credentials, @device_model)
-          @access_token = resp['access_token']
-          @refresh_token = resp['refresh_token']
-          device['access_token'] = @access_token
-          device['refresh_token'] = @refresh_token
-          save_credentials_with_device(credentials, device)
-          @access_token
-        end
+        process_token_response(resp)
       end
     end
 
   private
+
+    def process_token_response(resp)
+      if resp.json['error']
+        puts resp.json['error']
+        puts resp.json['error_description']
+        nil
+      else
+        credentials = get_credentials
+        device = get_device_from_credentials(credentials, @device_model)
+        @access_token = resp.json['access_token']
+        @refresh_token = resp.json['refresh_token']
+        device['access_token'] = @access_token
+        device['refresh_token'] = @refresh_token
+        save_credentials_with_device(credentials, device)
+        @access_token
+      end
+    end
+
+    def request_drs(method, path, headers: {}, params: {})
+      url = "https://#{@drs_host}#{path}"
+      if @authorization_code.nil?
+        raise 'Authorization Code is not set'
+      end
+      if @access_token.nil?
+        token = get_token
+        if token.nil?
+          raise 'Failed to get token'
+        end
+      end
+      resp = request(method, url, headers: headers, params: params)
+      if resp == '400' && resp.json['error'] == 'invalid_token' && @refresh_token
+        resp = refresh_access_token
+        process_token_response(resp)
+      end
+    end
+
+    def refresh_access_token
+      params = {
+        grant_type: 'refresh_token',
+        refresh_token: @refresh_token,
+        client_id: Adash::Config.client_id,
+        client_secret: Adash::Config.client_secret
+      }
+      request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
+    end
 
     def request_token
       params = {
