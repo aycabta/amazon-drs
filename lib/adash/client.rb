@@ -85,6 +85,17 @@ module Adash
       request_drs(:post, path, headers: headers, params: params)
     end
 
+    def replenish(slot_id)
+      headers = {
+        'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsReplenishResult@1.0',
+        'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsReplenishInput@1.0'
+      }
+      path = "/replenish/#{slot_id}"
+      response = request_drs(:post, path, headers: headers, params: params)
+      # TODO: imprement response processing
+      # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-replenish-endpoint
+    end
+
     def get_token
       if @access_token
         @access_token
