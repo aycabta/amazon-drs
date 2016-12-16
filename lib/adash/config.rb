@@ -5,7 +5,7 @@ module Adash
       @@client_id = f.readline.chomp
       @@client_secret = f.readline.chomp
       @@redirect_port = f.readline.chomp.to_i
-      @@credentials_path = "#{Dir.home}/.config/adash/config"
+      @@credentials_path = "#{Dir.home}/.config/adash/credentials"
     end
 
     def self.client_id
