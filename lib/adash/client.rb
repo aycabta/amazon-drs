@@ -2,6 +2,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 require 'yaml'
+require 'date'
 require 'adash/config'
 
 class Net::HTTPResponse
@@ -47,6 +48,25 @@ module Adash
       response = request_drs(:delete, path, headers: headers)
       save_credentials_without_device_model(@device_model)
       response
+    end
+
+    def device_status(most_recently_active_date)
+      headers = {
+        'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsDeviceStatusResult@1.0',
+        'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeviceStatusInput@1.0'
+      }
+      path = '/deviceStatus'
+      case most_recently_active_date
+      when Date
+        date_str = most_recently_active_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+      when Time
+        date_str = most_recently_active_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+      when String
+        date_str = most_recently_active_date
+      else
+        date_str = most_recently_active_date.to_s
+      end
+      request_drs(:post, path, headers: headers, params: { 'mostRecentlyActiveDate' => date_str })
     end
 
     def subscription_info
