@@ -49,6 +49,7 @@ module Adash
         client_id: Adash::Config.client_id,
         scope: 'dash:replenish',
         response_type: 'code',
+        # redirect_uri must exact-match with escaped it when access_token is requested
         redirect_uri: URI.encode_www_form_component(@redirect_uri),
         scope_data: %Q`{"dash:replenish":{"device_model":"#{device_model}","serial":"#{serial}"#{ ',"is_test_device":true' if @is_test }}}`
       }
