@@ -56,7 +56,7 @@ unless argv.empty?
     wi = Adash::WaitIndefinitely.new(device_model, serial)
     Signal.trap(:INT){ wi.shutdown }
     code = wi.get_code
-    FileUtils.mkdir_p(CONFIG_PATH)
+    FileUtils.mkdir_p(File.expand_path('..', Adash::Config.credentials_path))
     new_device = {
       'device_model' => device_model,
       'serial' => serial,
