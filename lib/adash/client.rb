@@ -2,6 +2,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 require 'yaml'
+require 'time'
 require 'date'
 require 'adash/config'
 
@@ -57,10 +58,8 @@ module Adash
       }
       path = '/deviceStatus'
       case most_recently_active_date
-      when Date
-        date_str = most_recently_active_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-      when Time
-        date_str = most_recently_active_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+      when Date, Time
+        date_str = most_recently_active_date.iso8601
       when String
         date_str = most_recently_active_date
       else
