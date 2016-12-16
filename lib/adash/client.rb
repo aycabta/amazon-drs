@@ -96,15 +96,6 @@ module Adash
       # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-replenish-endpoint
     end
 
-    def get_token
-      if @access_token
-        @access_token
-      else
-        resp = request_token
-        process_token_response(resp)
-      end
-    end
-
   private
 
     def convert_to_iso8601(input)
@@ -162,6 +153,15 @@ module Adash
       }
       @access_token = nil
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
+    end
+
+    def get_token
+      if @access_token
+        @access_token
+      else
+        resp = request_token
+        process_token_response(resp)
+      end
     end
 
     def request_token
