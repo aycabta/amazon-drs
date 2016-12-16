@@ -69,6 +69,22 @@ module Adash
       request_drs(:get, path, headers: headers)
     end
 
+    def slot_status(slot_id, expected_replenishment_date, remaining_quantity_in_unit, original_quantity_in_unit, total_quantity_on_hand, last_use_date)
+      headers = {
+        'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsSlotStatusResult@1.0',
+        'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsSlotStatusInput@1.0'
+      }
+      path = "/slotStatus/#{slot_id}"
+      params = {
+        'expectedReplenishmentDate' => convert_to_iso8601(expected_replenishment_date),
+        'remainingQuantityInUnit' => remaining_quantity_in_unit,
+        'originalQuantityInUnit' => original_quantity_in_unit,
+        'totalQuantityOnHand' => total_quantity_on_hand,
+        'lastUseDate' => convert_to_iso8601(last_use_date)
+      }
+      request_drs(:post, path, headers: headers, params: params)
+    end
+
     def get_token
       if @access_token
         @access_token
