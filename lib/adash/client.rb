@@ -98,7 +98,7 @@ module Adash
         end
       end
       resp = request(method, url, headers: headers, params: params)
-      if resp == '400' && resp.json['error'] == 'invalid_token' && @refresh_token
+      if resp.code == '400' && resp.json['message'] == 'Invalid token' && @refresh_token
         resp = refresh_access_token
         process_token_response(resp)
       end
