@@ -60,7 +60,7 @@ module Adash
       t = Thread.new do
         @code_mutex.synchronize {
           # TODO: wait for WEBrick launch
-          Launchy.open('http://localhost:55582/getting_started')
+          Launchy.open("http://localhost:#{Adash::Config.redirect_port}/getting_started")
           while @code_box.size == 0
             @code_cv.wait(@code_mutex)
             sleep 1
