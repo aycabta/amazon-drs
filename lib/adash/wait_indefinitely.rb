@@ -20,7 +20,7 @@ module Adash
       @server = WEBrick::HTTPServer.new({ :BindAddress => '127.0.0.1', :Port => Adash::Config.redirect_port })
       @server.mount_proc('/getting_started', proc { |req, res|
         res.content_type = 'text/html'
-        content = %Q`<p>Please go <a href="#{ERB::Util.html_escape(amazon_authorization_url(@device_model, @serial))}">initial tour</a>.</p>`
+        content = %Q`<p>Please go to <a href="#{ERB::Util.html_escape(amazon_authorization_url(@device_model, @serial))}">initial tour</a>.</p>`
         res.body = render(content)
       })
       @server.mount_proc('/', proc { |req, res|
