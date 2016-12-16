@@ -111,6 +111,7 @@ module Adash
         client_id: Adash::Config.client_id,
         client_secret: Adash::Config.client_secret
       }
+      @access_token = nil
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
 
