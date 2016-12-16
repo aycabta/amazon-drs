@@ -57,15 +57,7 @@ module Adash
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeviceStatusInput@1.0'
       }
       path = '/deviceStatus'
-      case most_recently_active_date
-      when Date, Time
-        date_str = most_recently_active_date.iso8601
-      when String
-        date_str = most_recently_active_date
-      else
-        date_str = most_recently_active_date.to_s
-      end
-      request_drs(:post, path, headers: headers, params: { 'mostRecentlyActiveDate' => date_str })
+      request_drs(:post, path, headers: headers, params: { 'mostRecentlyActiveDate' =>  convert_to_iso8601(most_recently_active_date) })
     end
 
     def subscription_info
@@ -87,6 +79,17 @@ module Adash
     end
 
   private
+
+    def convert_to_iso8601(input)
+      case input
+      when Date, Time
+        input.iso8601
+      when String
+        input
+      else
+        input.to_s
+      end
+    end
 
     def process_token_response(resp)
       if resp.json['error']
