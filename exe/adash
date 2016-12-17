@@ -77,6 +77,14 @@ unless argv.empty?
       puts "  serial: #{device['serial']}"
       puts '  THIS DEVICE IS TEST PURCHASE MODE' if device['is_test']
     end
+  when 'deregistrate'
+    if argv.size < 1
+      puts 'Usage: adash deregistrate device_model'
+      exit 4
+    end
+    device_model = argv.shift
+    client = Adash::Client.new(device_model)
+    resp = client.deregistrate_device
   when 'list-slot'
     if argv.size < 1
       puts 'Usage: adash list-slot device_model'
