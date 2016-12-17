@@ -77,6 +77,21 @@ unless argv.empty?
       puts "  serial: #{device['serial']}"
       puts '  THIS DEVICE IS TEST PURCHASE MODE' if device['is_test']
     end
+  when 'list-slot'
+    if argv.size < 1
+      puts 'Usage: adash list-slot device_model'
+      exit 4
+    end
+    device_model = argv.shift
+    client = Adash::Client.new(device_model)
+    resp = client.subscription_info
+    index = 0
+    resp.json['slotsSubscriptionStatus'].each do |slot_id, available|
+      puts "---- #{index}"
+      puts "* slot_id: #{slot_id}"
+      puts "  available: #{available}"
+      index =+ 1
+    end
   else
     $stderr.puts "no such subcommand: #{k}"
     exit 1
