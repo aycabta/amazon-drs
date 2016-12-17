@@ -88,7 +88,7 @@ unless argv.empty?
   when 'list-slot'
     if argv.size < 1
       puts 'Usage: adash list-slot device_model'
-      exit 4
+      exit 5
     end
     device_model = argv.shift
     client = Adash::Client.new(device_model)
