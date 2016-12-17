@@ -91,7 +91,7 @@ module Adash
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsReplenishInput@1.0'
       }
       path = "/replenish/#{slot_id}"
-      response = request_drs(:post, path, headers: headers, params: params)
+      response = request_drs(:post, path, headers: headers)
       # TODO: imprement response processing
       # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-replenish-endpoint
     end
