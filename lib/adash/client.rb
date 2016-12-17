@@ -142,6 +142,8 @@ module Adash
         resp = refresh_access_token
         process_token_response(resp)
         request(method, url, headers: headers, params: params)
+      else
+        resp
       end
     end
 
