@@ -100,6 +100,15 @@ unless argv.empty?
       puts "  available: #{available}"
       index =+ 1
     end
+  when 'replenish'
+    if argv.size < 2
+      puts 'Usage: adash replenish device_model slot_id'
+      exit 6
+    end
+    device_model = argv.shift
+    slot_id = argv.shift
+    client = Adash::Client.new(device_model)
+    resp = client.replenish(slot_id)
   else
     $stderr.puts "no such subcommand: #{k}"
     exit 1
