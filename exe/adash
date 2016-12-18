@@ -125,7 +125,8 @@ unless argv.empty?
     open(Adash::Config.credentials_path, 'w') do |f|
       f.write(credentials.to_yaml)
     end
-    Adash::Client.new(device_model).get_token
+    client = create_client_from_device(new_device)
+    client.get_token
   when 'list'
     credentials = get_credentials
     credentials['authorized_devices'].each do |device|
@@ -136,19 +137,22 @@ unless argv.empty?
     end
   when 'deregistrate'
     if argv.size < 1
-      puts 'Usage: adash deregistrate device_model'
+      puts 'Usage: adash deregistrate name'
       exit 4
     end
-    device_model = argv.shift
-    client = Adash::Client.new(device_model)
+    name = argv.shift
+    device = get_device_by_name(name)
+    client = create_client_from_device(device)
     resp = client.deregistrate_device
+    save_credentials_without_device_model(device['device_model'])
   when 'list-slot'
     if argv.size < 1
-      puts 'Usage: adash list-slot device_model'
+      puts 'Usage: adash list-slot name'
       exit 5
     end
-    device_model = argv.shift
-    client = Adash::Client.new(device_model)
+    name = argv.shift
+    device = get_device_by_name(name)
+    client = create_client_from_device(device)
     resp = client.subscription_info
     index = 0
     resp.json['slotsSubscriptionStatus'].each do |slot_id, available|
@@ -159,12 +163,13 @@ unless argv.empty?
     end
   when 'replenish'
     if argv.size < 2
-      puts 'Usage: adash replenish device_model slot_id'
+      puts 'Usage: adash replenish name slot_id'
       exit 6
     end
     device_model = argv.shift
     slot_id = argv.shift
-    client = Adash::Client.new(device_model)
+    device = get_device_by_name(name)
+    client = create_client_from_device(device)
     resp = client.replenish(slot_id)
   else
     $stderr.puts "no such subcommand: #{k}"

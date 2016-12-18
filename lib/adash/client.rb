@@ -12,7 +12,8 @@ end
 
 module Adash
   class Client
-    attr_accessor :access_token
+    attr_accessor :device_model, :serial, :authorization_code, :redirect_uri, :access_token, :refresh_token
+    attr_accessor :on_new_token
     attr_writer :user_agent
 
     def initialize(device_model)
@@ -24,16 +25,7 @@ module Adash
       @redirect_uri = nil
       @access_token = nil
       @refresh_token = nil
-      credentials = get_credentials
-      i = credentials['authorized_devices'].find_index { |d| d['device_model'] == @device_model }
-      if i
-        device = credentials['authorized_devices'][i]
-        @serial = device['serial']
-        @authorization_code = device['authorization_code']
-        @redirect_uri = device['redirect_uri']
-        @access_token = device['access_token']
-        @refresh_token = device['refresh_token']
-      end
+      yield(self) if block_given?
     end
 
     def user_agent
@@ -46,9 +38,7 @@ module Adash
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeregisterInput@1.0'
       }
       path = "/deviceModels/#{@device_model}/devices/#{@serial}/registration"
-      response = request_drs(:delete, path, headers: headers)
-      save_credentials_without_device_model(@device_model)
-      response
+      request_drs(:delete, path, headers: headers)
     end
 
     def device_status(most_recently_active_date)
