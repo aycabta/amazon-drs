@@ -150,6 +150,10 @@ unless argv.empty?
     end
     name = argv.shift
     device = get_device_by_name(name)
+    unless device
+      puts "Device #{name} not found"
+      exit 5
+    end
     client = create_client_from_device(device)
     resp = client.deregistrate_device
     save_credentials_without_device_model(device['device_model'])
@@ -160,6 +164,10 @@ unless argv.empty?
     end
     name = argv.shift
     device = get_device_by_name(name)
+    unless device
+      puts "Device #{name} not found"
+      exit 5
+    end
     client = create_client_from_device(device)
     resp = client.subscription_info
     index = 0
@@ -177,6 +185,10 @@ unless argv.empty?
     name = argv.shift
     slot_id = argv.shift
     device = get_device_by_name(name)
+    unless device
+      puts "Device #{name} not found"
+      exit 5
+    end
     client = create_client_from_device(device)
     resp = client.replenish(slot_id)
   else
