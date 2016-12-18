@@ -98,12 +98,13 @@ unless argv.empty?
     device_model = argv.shift
     serial = generate_serial(device_model)
     credentials = get_credentials
-    hit = credentials['authorized_devices'].find_index { |d| d['device_model'] == device_model }
+    authorized_devices = credentials['authorized_devices']
+    hit = authorized_devices.find_index { |d| d['device_model'] == device_model }
     if hit
       puts "Adash knows device what is #{device_model}."
       exit 3
     end
-    hit = credentials['authorized_devices'].find_index { |d| d['name'] == name }
+    hit = authorized_devices.find_index { |d| d['name'] == name }
     if hit
       puts "Adash knows device what is named #{name}."
       exit 3
