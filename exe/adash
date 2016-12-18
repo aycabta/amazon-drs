@@ -77,10 +77,9 @@ unless argv.empty?
     end
     Adash::Client.new(device_model).get_token
   when 'list'
-    data = get_data
-    data['authorized_devices'].each_index do |index|
-      device = data['authorized_devices'][index]
-      puts "---- #{index}"
+    credentials = get_credentials
+    credentials['authorized_devices'].each do |device|
+      puts "---- name: #{device['name']}"
       puts "* device_model: #{device['device_model']}"
       puts "  serial: #{device['serial']}"
       puts '  THIS DEVICE IS TEST PURCHASE MODE' if device['is_test']
