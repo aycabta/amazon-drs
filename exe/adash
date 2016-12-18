@@ -19,13 +19,12 @@ def generate_serial(device_model)
   "#{device_model}_#{Time.now.to_i}_#{random_suffix}"
 end
 
-def get_data
+def get_credentials
   if File.exist?(Adash::Config.credentials_path)
-    data = YAML.load_file(Adash::Config.credentials_path).to_h
+    credentials = YAML.load_file(Adash::Config.credentials_path)
   else
-    data = { 'authorized_devices' => [] }
+    { 'authorized_devices' => [] }
   end
-  data
 end
 
 argv = opt.order(ARGV)
@@ -48,13 +47,13 @@ unless argv.empty?
     name = argv.shift
     device_model = argv.shift
     serial = generate_serial(device_model)
-    data = get_data
-    hit = data['authorized_devices'].find_index { |d| d['device_model'] == device_model }
+    credentials = get_credentials
+    hit = credentials['authorized_devices'].find_index { |d| d['device_model'] == device_model }
     if hit
       puts "Adash knows device what is #{device_model}."
       exit 3
     end
-    hit = data['authorized_devices'].find_index { |d| d['name'] == name }
+    hit = credentials['authorized_devices'].find_index { |d| d['name'] == name }
     if hit
       puts "Adash knows device what is named #{name}."
       exit 3
@@ -71,9 +70,9 @@ unless argv.empty?
       'redirect_uri' => wi.redirect_uri
     }
     new_device['is_test'] = true if is_test
-    data['authorized_devices'] << new_device
+    credentials['authorized_devices'] << new_device
     open(Adash::Config.credentials_path, 'w') do |f|
-      f.write(data.to_yaml)
+      f.write(credentials.to_yaml)
     end
     Adash::Client.new(device_model).get_token
   when 'list'
