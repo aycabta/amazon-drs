@@ -25,6 +25,7 @@ module Adash
       @redirect_uri = nil
       @access_token = nil
       @refresh_token = nil
+      @on_new_token = nil
       yield(self) if block_given?
     end
 
@@ -118,13 +119,7 @@ module Adash
         puts resp.json['error_description']
         nil
       else
-        credentials = get_credentials
-        device = get_device_from_credentials(credentials, @device_model)
-        @access_token = resp.json['access_token']
-        @refresh_token = resp.json['refresh_token']
-        device['access_token'] = @access_token
-        device['refresh_token'] = @refresh_token
-        save_credentials_with_device(credentials, device)
+        @on_new_token.call(resp.json['access_token'], resp.json['refresh_token']) unless @on_new_token
         @access_token
       end
     end

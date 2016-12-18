@@ -64,6 +64,14 @@ def create_client_from_device(device)
     @redirect_uri = device['redirect_uri']
     @access_token = device['access_token']
     @refresh_token = device['refresh_token']
+    @on_new_token = proc { |access_token, refresh_token|
+      credentials = get_credentials
+      updated_device = get_device_from_credentials(credentials, device['device_model'])
+      updated_device['access_token'] = access_token
+      updated_device['refresh_token'] = refresh_token
+      save_credentials_with_device(credentials, updated_device)
+      device['device_model']
+    }
   end
 end
 
