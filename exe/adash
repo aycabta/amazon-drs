@@ -51,7 +51,12 @@ unless argv.empty?
     data = get_data
     hit = data['authorized_devices'].find_index { |d| d['device_model'] == device_model }
     if hit
-      puts "Adash knows #{device_model} device."
+      puts "Adash knows device what is #{device_model}."
+      exit 3
+    end
+    hit = data['authorized_devices'].find_index { |d| d['name'] == name }
+    if hit
+      puts "Adash knows device what is named #{name}."
       exit 3
     end
     wi = Adash::WaitIndefinitely.new(device_model, serial)
