@@ -119,7 +119,9 @@ module Adash
         puts resp.json['error_description']
         nil
       else
-        @on_new_token.call(resp.json['access_token'], resp.json['refresh_token']) unless @on_new_token
+        @access_token = resp.json['access_token']
+        @refresh_token = resp.json['refresh_token']
+        @on_new_token.call(@access_token, @refresh_token) if @on_new_token
         @access_token
       end
     end
