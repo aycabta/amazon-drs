@@ -174,7 +174,7 @@ unless argv.empty?
       puts 'Usage: adash replenish name slot_id'
       exit 6
     end
-    device_model = argv.shift
+    name = argv.shift
     slot_id = argv.shift
     device = get_device_by_name(name)
     client = create_client_from_device(device)
