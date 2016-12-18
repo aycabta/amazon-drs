@@ -61,6 +61,7 @@ end
 def create_client_from_device(device)
   Adash::Client.new(device['device_model']) do |c|
     c.authorization_code = device['authorization_code']
+    c.serial = device['serial']
     c.redirect_uri = device['redirect_uri']
     c.access_token = device['access_token']
     c.refresh_token = device['refresh_token']
