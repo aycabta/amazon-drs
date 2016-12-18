@@ -41,10 +41,11 @@ unless argv.empty?
       puts 'TEST MODE'
     }
     argv = init_opt.parse(argv)
-    if argv.size < 1
-      puts 'Usage: adash init device_model'
+    if argv.size < 2
+      puts 'Usage: adash init name device_model'
       exit 2
     end
+    name = argv.shift
     device_model = argv.shift
     serial = generate_serial(device_model)
     data = get_data
@@ -58,6 +59,7 @@ unless argv.empty?
     code = wi.get_code
     FileUtils.mkdir_p(File.expand_path('..', Adash::Config.credentials_path))
     new_device = {
+      'name' => name,
       'device_model' => device_model,
       'serial' => serial,
       'authorization_code' => code,
