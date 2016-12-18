@@ -27,6 +27,56 @@ def get_credentials
   end
 end
 
+def save_credentials(credentials)
+  open(Adash::Config.credentials_path, 'w') do |f|
+    f.write(credentials.to_yaml)
+  end
+end
+
+def get_device_from_credentials(credentials, device_model)
+  i = credentials['authorized_devices'].find_index { |d| d['device_model'] == device_model }
+  if i
+    credentials['authorized_devices'][i]
+  else
+    nil
+  end
+end
+
+def save_credentials_with_device(credentials, device)
+  i = credentials['authorized_devices'].find_index { |d| d['device_model'] == @device_model }
+  if i
+    credentials['authorized_devices'][i] = device
+  else
+    credentials['authorized_devices'] << device
+  end
+  save_credentials(credentials)
+end
+
+def save_credentials_without_device_model(device_model)
+  credentials = get_credentials
+  credentials['authorized_devices'] = credentials['authorized_devices'].delete_if { |d| d['device_model'] == @device_model }
+  save_credentials(credentials)
+end
+
+def create_client_from_device(device)
+  Adash::Client.new(device_model) do |c|
+    @authorization_code = device['authorization_code']
+    @redirect_uri = device['redirect_uri']
+    @access_token = device['access_token']
+    @refresh_token = device['refresh_token']
+  end
+end
+
+def get_device_by_name(name)
+  credentials = get_credentials
+  hit = credentials['authorized_devices'].find_index { |d| d['name'] == name }
+  if hit
+    device = credentials['authorized_devices'][hit]
+  else
+    nil
+  end
+end
+
 argv = opt.order(ARGV)
 unless argv.empty?
   subcmd = argv.shift

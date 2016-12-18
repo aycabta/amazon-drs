@@ -182,45 +182,6 @@ module Adash
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
 
-    def get_credentials
-      if File.exist?(Adash::Config.credentials_path)
-        credentials = YAML.load_file(Adash::Config.credentials_path)
-      else
-        { 'authorized_devices' => [] }
-      end
-    end
-
-    def save_credentials(credentials)
-      open(Adash::Config.credentials_path, 'w') do |f|
-        f.write(credentials.to_yaml)
-      end
-    end
-
-    def get_device_from_credentials(credentials, device_model)
-      i = credentials['authorized_devices'].find_index { |d| d['device_model'] == device_model }
-      if i
-        credentials['authorized_devices'][i]
-      else
-        nil
-      end
-    end
-
-    def save_credentials_with_device(credentials, device)
-      i = credentials['authorized_devices'].find_index { |d| d['device_model'] == @device_model }
-      if i
-        credentials['authorized_devices'][i] = device
-      else
-        credentials['authorized_devices'] << device
-      end
-      save_credentials(credentials)
-    end
-
-    def save_credentials_without_device_model(device_model)
-      credentials = get_credentials
-      credentials['authorized_devices'] = credentials['authorized_devices'].delete_if { |d| d['device_model'] == @device_model }
-      save_credentials(credentials)
-    end
-
     def request(method, url, headers: {}, params: {})
       uri = URI.parse(url)
       if params.any?{ |key, value| value.is_a?(Enumerable) }
