@@ -43,7 +43,7 @@ def get_device_from_credentials(credentials, device_model)
 end
 
 def save_credentials_with_device(credentials, device)
-  i = credentials['authorized_devices'].find_index { |d| d['device_model'] == @device_model }
+  i = credentials['authorized_devices'].find_index { |d| d['device_model'] == device_model }
   if i
     credentials['authorized_devices'][i] = device
   else
@@ -54,7 +54,7 @@ end
 
 def save_credentials_without_device_model(device_model)
   credentials = get_credentials
-  credentials['authorized_devices'] = credentials['authorized_devices'].delete_if { |d| d['device_model'] == @device_model }
+  credentials['authorized_devices'] = credentials['authorized_devices'].delete_if { |d| d['device_model'] == device_model }
   save_credentials(credentials)
 end
 
