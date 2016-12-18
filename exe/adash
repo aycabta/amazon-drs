@@ -68,6 +68,7 @@ unless argv.empty?
     open(Adash::Config.credentials_path, 'w') do |f|
       f.write(data.to_yaml)
     end
+    Adash::Client.new(device_model).get_token
   when 'list'
     data = get_data
     data['authorized_devices'].each_index do |index|
