@@ -59,7 +59,7 @@ def save_credentials_without_device_model(device_model)
 end
 
 def create_client_from_device(device)
-  Adash::Client.new(device_model) do |c|
+  Adash::Client.new(device['device_model']) do |c|
     @authorization_code = device['authorization_code']
     @redirect_uri = device['redirect_uri']
     @access_token = device['access_token']
