@@ -130,9 +130,7 @@ unless argv.empty?
     }
     new_device['is_test'] = true if is_test
     credentials['authorized_devices'] << new_device
-    open(Adash::Config.credentials_path, 'w') do |f|
-      f.write(credentials.to_yaml)
-    end
+    save_credentials(credentials)
     client = create_client_from_device(new_device)
     client.get_token
   when 'list'
