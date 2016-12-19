@@ -100,7 +100,7 @@ module Adash
       end
     end
 
-  private
+    private
 
     def convert_to_iso8601(input)
       case input
