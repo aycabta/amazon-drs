@@ -6,6 +6,7 @@ require 'adash'
 require 'adash/config'
 require 'adash/wait_indefinitely'
 require 'optparse'
+require 'readline'
 require 'fileutils'
 require 'yaml'
 
@@ -83,6 +84,26 @@ def get_device_by_name(name)
     device = credentials['authorized_devices'][hit]
   else
     nil
+  end
+end
+
+def select_slot_prompt(client)
+  resp = client.subscription_info
+  slots = resp.json['slotsSubscriptionStatus']
+  index = 0
+  slot_array = []
+  slots.each do |slot_id, available|
+    slot_array[index] = slot_id
+    puts "---- number: #{index}"
+    puts "* slot_id: #{slot_id}"
+    puts "  available: #{available}"
+    index =+ 1
+  end
+  loop do
+    slot_num = Readline.readline('Select slot number> ').to_i
+    if (0..(slots.size - 1)).member?(slot_num)
+      break slot_array[slot_num]
+    end
   end
 end
 
@@ -177,17 +198,18 @@ unless argv.empty?
       index =+ 1
     end
   when 'replenish'
-    if argv.size < 2
-      puts 'Usage: adash replenish name slot_id'
+    if argv.size < 1
+      puts 'Usage: adash replenish name [slot_id]'
       exit 6
     end
     name = argv.shift
-    slot_id = argv.shift
+    slot_id = argv.first.start_with?('-') ? nil : argv.shift
     device = get_device_by_name(name)
     unless device
       puts "Device #{name} not found"
       exit 5
     end
+    slot_id = select_slot_prompt(client) unless slot_id
     client = create_client_from_device(device)
     resp = client.replenish(slot_id)
   else
