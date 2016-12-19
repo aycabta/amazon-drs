@@ -36,7 +36,6 @@ module Adash
         end
         res.body = render(content)
       })
-      @server
     end
 
     def render(content)
