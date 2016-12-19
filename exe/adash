@@ -215,8 +215,8 @@ unless argv.empty?
       puts "Device #{name} not found"
       exit 5
     end
-    slot_id = select_slot_prompt(client) unless slot_id
     client = create_client_from_device(device)
+    slot_id = select_slot_prompt(client) unless slot_id
     resp = client.replenish(slot_id)
   else
     $stderr.puts "no such subcommand: #{k}"
