@@ -87,22 +87,28 @@ def get_device_by_name(name)
   end
 end
 
-def select_slot_prompt(client)
-  resp = client.subscription_info
-  slots = resp.json['slotsSubscriptionStatus']
+def show_slots(slots)
   index = 0
-  slot_array = []
   slots.each do |slot_id, available|
-    slot_array[index] = slot_id
+    puts
     puts "---- number: #{index}"
     puts "* slot_id: #{slot_id}"
     puts "  available: #{available}"
+    puts
     index =+ 1
   end
+end
+
+def select_slot_prompt(client)
+  resp = client.subscription_info
+  slots = resp.json['slotsSubscriptionStatus']
   loop do
-    slot_num = Readline.readline('Select slot number> ').to_i
-    if (0..(slots.size - 1)).member?(slot_num)
-      break slot_array[slot_num]
+    show_slots(slots)
+    slot_num = Readline.readline('Select slot number> ')
+    if (0..(slots.size - 1)).member?(slot_num.to_i)
+      break slots.keys[slot_num.to_i]
+    else
+      puts "#{slot_num} is out of Range"
     end
   end
 end
