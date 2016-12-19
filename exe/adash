@@ -209,7 +209,7 @@ unless argv.empty?
       exit 6
     end
     name = argv.shift
-    slot_id = argv.first.start_with?('-') ? nil : argv.shift
+    slot_id = argv.first&.start_with?('-') ? nil : argv.shift
     device = get_device_by_name(name)
     unless device
       puts "Device #{name} not found"
