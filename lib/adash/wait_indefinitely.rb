@@ -39,7 +39,16 @@ module Adash
     end
 
     def render(content)
-      "<html><body>\n#{content}\n</body></html>"
+      <<~EOH
+      <html>
+        <head>
+          <meta name="referrer" content="no-referrer" />
+        </head>
+        <body>
+          #{content}
+        </body>
+      </html>
+      EOH
     end
 
     def amazon_authorization_url(device_model, serial)
