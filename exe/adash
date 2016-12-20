@@ -108,7 +108,7 @@ def select_slot_prompt(client)
     if (0..(slots.size - 1)).member?(slot_num.to_i)
       break slots.keys[slot_num.to_i]
     else
-      puts "#{slot_num} is out of Range"
+      puts "ERROR: #{slot_num} is out of Range"
     end
   end
 end
