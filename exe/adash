@@ -223,9 +223,9 @@ unless argv.empty?
     else
       case resp.json['detailCode']
       when 'STANDARD_ORDER_PLACED'
-        puts 'Succeeded to order'
+        puts 'Succeeded to order.'
       when 'ORDER_INPROGRESS'
-        puts 'The order is in progress'
+        puts 'The order is in progress.'
       end
     end
   else
