@@ -101,7 +101,7 @@ end
 
 def select_slot_prompt(client)
   resp = client.subscription_info
-  slots = resp.json['slotsSubscriptionStatus']
+  slots = resp.json['slotsSubscriptionStatus'].select{ |k, v| v }
   loop do
     show_slots(slots)
     slot_num = Readline.readline('Select slot number> ')
