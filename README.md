@@ -35,6 +35,13 @@ $ adash init lozenge 01234567-89ab-cdef-0123-456789abcdef
 WEBrick web server runs intenally, and a browser is opened for it.
 You are requested OAuth authorization and DRS initialization.
 
+### `adash list`
+
+### `adash list-slot`
+
+### `adash replenish`
+
+### `adash deregistrate`
 
 ## Contributing
 
