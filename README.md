@@ -92,6 +92,8 @@ elect slot number> 1
 The order is in progress.
 ```
 
+There are no the selection prompts when the slot is just one.
+
 ### `adash deregistrate`
 
 ## Contributing
