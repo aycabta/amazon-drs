@@ -37,6 +37,18 @@ You are requested OAuth authorization and DRS initialization.
 
 ### `adash list`
 
+The sub-command `adash list` shows initialized devices list.
+
+```bash
+$ adash list
+---- name: mouth
+* device_model: 01234567-89ab-cdef-0123-456789abcdef
+  serial: d973f856-a21e-4701-bcfa-8e8eb8913c31_1482343916_3SVTiar3FX0CBnZW
+---- name: jaga
+* device_model: fedcba98-7654-3210-fedc-ba9876543210
+  serial: fbb51681-d087-4495-806e-c1f58ac59d4e_1482419498_afSWz8PqGgyqOqaH
+```
+
 ### `adash list-slot`
 
 ### `adash replenish`
