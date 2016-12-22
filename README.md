@@ -96,6 +96,12 @@ There are no the selection prompts when the slot is just one.
 
 ### `adash deregistrate`
 
+You can delete device from Adash and Amazon.
+
+```bash
+$ adash deregistrate lozenge
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/adash.
