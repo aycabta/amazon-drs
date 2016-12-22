@@ -20,9 +20,21 @@ Or install it yourself as:
 
 ## Usage
 
+### `adash init`
+
+You can initialize with `adash init` sub-command. It takes `name` and `device_model` what likes `01234567-89ab-cdef-0123-456789abcdef`.
+
 ```bash
-$ adash init [device_model]
+$ adash init lozenge 01234567-89ab-cdef-0123-456789abcdef
+[2016-12-23 00:11:44] INFO  WEBrick 1.3.1
+[2016-12-23 00:11:44] INFO  ruby 2.3.3 (2016-11-21) [x86_64-linux]
+[2016-12-23 00:11:44] INFO  WEBrick::HTTPServer#start: pid=11687 port=55582
+...
 ```
+
+WEBrick web server runs intenally, and a browser is opened for it.
+You are requested OAuth authorization and DRS initialization.
+
 
 ## Contributing
 
