@@ -63,6 +63,35 @@ $ adash list-slot lozenge
 
 ### `adash replenish`
 
+```bash
+$ adash replenish lozenge
+
+---- number: 0
+* slot_id: 01a23b45-c56d-78e9-01a2-3b45c56d78e9
+  available: true
+
+
+---- number: 1
+* slot_id: 9e87d65c-54b3-2a10-9e87-d65c54b32a10
+  available: true
+
+Select slot number>
+```
+
+You should select replenish slot.
+
+```bash
+elect slot number> 1
+Succeeded to order.
+```
+
+If the slot is already ordered, the message below is shown.
+
+```bash
+elect slot number> 1
+The order is in progress.
+```
+
 ### `adash deregistrate`
 
 ## Contributing
