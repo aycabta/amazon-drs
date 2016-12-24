@@ -1,13 +1,13 @@
-# Adash
+# AmazonDrs
 
-It's a CLI for Amazon Dash Replenishment Service.
+It's for Amazon Dash Replenishment Service.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'adash'
+gem 'amazon-drs'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install adash
+    $ gem install amazon-drs
 
 ## Usage
 
@@ -104,7 +104,7 @@ $ adash deregistrate lozenge
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/adash.
+Bug reports and pull requests are welcome on GitHub at https://github.com/aycabta/amazon-drs.
 
 
 ## License
