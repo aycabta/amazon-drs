@@ -4,13 +4,13 @@ require 'json'
 require 'yaml'
 require 'time'
 require 'date'
-require 'adash/config'
+require 'amazon-drs/config'
 
 class Net::HTTPResponse
     attr_accessor :json
 end
 
-module Adash
+module AmazonDrs
   class Client
     attr_accessor :device_model, :serial, :authorization_code, :redirect_uri, :access_token, :refresh_token
     attr_accessor :on_new_token
