@@ -4,7 +4,6 @@ require 'json'
 require 'yaml'
 require 'time'
 require 'date'
-require 'amazon-drs/config'
 
 class Net::HTTPResponse
     attr_accessor :json
@@ -12,7 +11,7 @@ end
 
 module AmazonDrs
   class Client
-    attr_accessor :device_model, :serial, :authorization_code, :redirect_uri, :access_token, :refresh_token
+    attr_accessor :device_model, :serial, :authorization_code, :redirect_uri, :access_token, :refresh_token, :client_id, :client_secret
     attr_accessor :on_new_token
     attr_writer :user_agent
 
@@ -26,6 +25,8 @@ module AmazonDrs
       @access_token = nil
       @refresh_token = nil
       @on_new_token = nil
+      @client_id = nil
+      @client_secret = nil
       yield(self) if block_given?
     end
 
@@ -151,8 +152,8 @@ module AmazonDrs
       params = {
         grant_type: 'refresh_token',
         refresh_token: @refresh_token,
-        client_id: Adash::Config.client_id,
-        client_secret: Adash::Config.client_secret
+        client_id: @client_id,
+        client_secret: @client_secret
       }
       @access_token = nil
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
@@ -162,9 +163,9 @@ module AmazonDrs
       params = {
         grant_type: 'authorization_code',
         code: @authorization_code,
-        client_id: Adash::Config.client_id,
-        client_secret: Adash::Config.client_secret,
-        redirect_uri: "http://localhost:#{Adash::Config.redirect_port}/"
+        client_id: @client_id,
+        client_secret: @client_secret,
+        redirect_uri: @redirect_uri
       }
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
