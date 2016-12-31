@@ -101,8 +101,6 @@ module AmazonDrs
       end
     end
 
-    private
-
     def convert_to_iso8601(input)
       case input
       when Date, Time
@@ -113,6 +111,7 @@ module AmazonDrs
         input.to_s
       end
     end
+    private :convert_to_iso8601
 
     def process_token_response(resp)
       if resp.json['error']
@@ -126,6 +125,7 @@ module AmazonDrs
         @access_token
       end
     end
+    private :process_token_response
 
     def request_drs(method, path, headers: {}, params: {})
       url = "https://#{@drs_host}#{path}"
@@ -147,6 +147,7 @@ module AmazonDrs
         resp
       end
     end
+    private :request_drs
 
     def refresh_access_token
       params = {
@@ -158,6 +159,7 @@ module AmazonDrs
       @access_token = nil
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
+    private :refresh_access_token
 
     def request_token
       params = {
@@ -169,6 +171,7 @@ module AmazonDrs
       }
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
+    private :request_token
 
     def request(method, url, headers: {}, params: {})
       uri = URI.parse(url)
@@ -210,5 +213,6 @@ module AmazonDrs
       response.json = JSON.parse(response.body)
       response
     end
+    private :request
   end
 end
