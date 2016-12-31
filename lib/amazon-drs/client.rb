@@ -115,8 +115,6 @@ module AmazonDrs
 
     def process_token_response(resp)
       if resp.json['error']
-        puts resp.json['error']
-        puts resp.json['error_description']
         nil
       else
         @access_token = resp.json['access_token']
