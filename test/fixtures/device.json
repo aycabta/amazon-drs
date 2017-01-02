@@ -1,0 +1,18 @@
+{
+  "jaga": {
+    "device_model": "fbb51681-d087-4495-806e-c1f58ac59d4e",
+    "serial": "greatserialMAX100",
+    "authorization_code": "293874934287423",
+    "redirect_uri": "http://super.perfect",
+    "access_token": "abc",
+    "refresh_token": "123"
+  },
+  "bar": {
+    "device_model": "eaa41345-647c-49e3-8fb9-ec27012f2f57",
+    "serial": "perfectserialspace",
+    "authorization_code": "fajoejo34freorfeow",
+    "redirect_uri": "http://super.perfect/100",
+    "access_token": "a11b22c",
+    "refresh_token": "AA123AABBBCC"
+  }
+}
