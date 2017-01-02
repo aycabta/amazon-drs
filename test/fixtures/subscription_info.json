@@ -1,0 +1,6 @@
+{
+  "slotsSubscriptionStatus": {
+    "slot1": true,
+    "slot2":false
+  }
+}
