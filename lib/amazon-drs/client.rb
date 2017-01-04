@@ -66,7 +66,7 @@ module AmazonDrs
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsSubscriptionInfoInput@1.0'
       }
       path = '/subscriptionInfo'
-      request_drs(:get, path, headers: headers)
+      response = request_drs(:get, path, headers: headers)
       if response.code == '200'
         ::AmazonDrs::SubscriptionInfo.new(response)
       else
