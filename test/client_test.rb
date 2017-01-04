@@ -17,11 +17,13 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
         c.redirect_uri = device['redirect_uri']
       end
       subscription_info = fixture('subscription_info.json')
+      # TODO: Add header for response
       stub_request(:get, "https://dash-replenishment-service-na.amazon.com/subscriptionInfo")
         .to_return(body: subscription_info, status: 200)
     end
     test 'requests the correct resource' do
       ret = @drs.subscription_info
+      # TODO: Use SubscriptionInfo
       assert_kind_of(Object, ret)
     end
   end
