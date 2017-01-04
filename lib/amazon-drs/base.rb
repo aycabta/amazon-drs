@@ -10,7 +10,7 @@ module AmazonDrs
       parse_body(response.body)
     end
 
-    def parse_headers(headers)
+    def parse_header(headers)
       headers.each_pair do |key, value|
         case key.downcase
         when 'x-amzn-errortype'
