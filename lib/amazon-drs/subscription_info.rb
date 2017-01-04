@@ -1,8 +1,17 @@
 require 'base'
+require 'json'
 
 module AmazonDrs
   class SubscriptionInfo < Base
-    # {"slotsSubscriptionStatus":{"slot1":true,"slot2":false}}
+    attr_accessor :slots
+
+    def parse_body(body)
+      json = JSON.parse(body)
+      @slots = {}
+      json['slotsSubscriptionStatus'].each_pair do |slot_id, available|
+        @slots[slot_id] = available
+      end
+    end
   end
 end
 
