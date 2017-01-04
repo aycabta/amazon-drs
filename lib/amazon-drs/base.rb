@@ -34,6 +34,6 @@ module AmazonDrs
     def parse_body(body)
       # abstract
     end
-    private parse_body
+    private :parse_body
   end
 end
