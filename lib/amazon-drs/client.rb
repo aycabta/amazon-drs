@@ -45,9 +45,9 @@ module AmazonDrs
       path = "/deviceModels/#{@device_model}/devices/#{@serial}/registration"
       response = request_drs(:delete, path, headers: headers)
       if response.code == '200'
-        DeregistrateDevice.new(response)
+        ::AmazonDrs::DeregistrateDevice.new(response)
       else
-        Error.new(response)
+        ::AmazonDrs::Error.new(response)
       end
     end
 
@@ -68,9 +68,9 @@ module AmazonDrs
       path = '/subscriptionInfo'
       request_drs(:get, path, headers: headers)
       if response.code == '200'
-        SubscriptionInfo.new(response)
+        ::AmazonDrs::SubscriptionInfo.new(response)
       else
-        Error.new(response)
+        ::AmazonDrs::Error.new(response)
       end
     end
 
