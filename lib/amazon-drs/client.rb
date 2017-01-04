@@ -4,8 +4,8 @@ require 'json'
 require 'yaml'
 require 'time'
 require 'date'
-require 'deregistrate_device'
-require 'subscription_info'
+require 'amazon-drs/deregistrate_device'
+require 'amazon-drs/subscription_info'
 
 class Net::HTTPResponse
     attr_accessor :json

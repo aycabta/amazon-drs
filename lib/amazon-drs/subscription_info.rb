@@ -1,5 +1,5 @@
-require 'base'
 require 'json'
+require 'amazon-drs/base'
 
 module AmazonDrs
   class SubscriptionInfo < Base
