@@ -31,7 +31,7 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
     test 'requests the correct resource' do
       ret = @drs.subscription_info
       # TODO: Use SubscriptionInfo
-      assert_kind_of(Object, ret)
+      assert_kind_of(AmazonDrs::SubscriptionInfo, ret)
     end
   end
 end
