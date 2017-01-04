@@ -5,6 +5,7 @@ require 'yaml'
 require 'time'
 require 'date'
 require 'deregistrate_device'
+require 'subscription_info'
 
 class Net::HTTPResponse
     attr_accessor :json
@@ -65,6 +66,11 @@ module AmazonDrs
       }
       path = '/subscriptionInfo'
       request_drs(:get, path, headers: headers)
+      if response.code == 200
+        SubscriptionInfo.new(response)
+      else
+        Error.new(response)
+      end
     end
 
     def slot_status(slot_id, expected_replenishment_date, remaining_quantity_in_unit, original_quantity_in_unit, total_quantity_on_hand, last_use_date)
