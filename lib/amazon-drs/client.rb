@@ -6,6 +6,7 @@ require 'time'
 require 'date'
 require 'amazon-drs/deregistrate_device'
 require 'amazon-drs/subscription_info'
+require 'amazon-drs/error'
 
 class Net::HTTPResponse
     attr_accessor :json
