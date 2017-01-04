@@ -7,6 +7,7 @@ module AmazonDrs
     def initialize(response)
       @response = response
       parse_header(response.header)
+      parse_body(response.body)
     end
 
     def parse_headers(headers)
@@ -29,5 +30,10 @@ module AmazonDrs
       end
     end
     private :parse_header
+
+    def parse_body(body)
+      # abstract
+    end
+    private parse_body
   end
 end
