@@ -19,7 +19,14 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
       subscription_info = fixture('subscription_info.json')
       # TODO: Add header for response
       stub_request(:get, "https://dash-replenishment-service-na.amazon.com/subscriptionInfo")
-        .to_return(body: subscription_info, status: 200)
+        .to_return(
+          body: subscription_info,
+          status: 200,
+          headers: {
+            'X-Amzn-Requestid' => 'd296d296-d1d1-1111-8c8c-0b43820b4382',
+            'X-Amz-Date' => 'Mon, 02 Jan 2017 22:35:53 GMT'
+          }
+        )
     end
     test 'requests the correct resource' do
       ret = @drs.subscription_info
