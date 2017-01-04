@@ -4,6 +4,7 @@ require 'json'
 require 'yaml'
 require 'time'
 require 'date'
+require 'deregistrate_device'
 
 class Net::HTTPResponse
     attr_accessor :json
@@ -40,7 +41,12 @@ module AmazonDrs
         'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsDeregisterInput@1.0'
       }
       path = "/deviceModels/#{@device_model}/devices/#{@serial}/registration"
-      request_drs(:delete, path, headers: headers)
+      response = request_drs(:delete, path, headers: headers)
+      if response.code == 200
+        DeregistrateDevice.new(response)
+      else
+        Error.new(response)
+      end
     end
 
     def device_status(most_recently_active_date)
