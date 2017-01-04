@@ -4,7 +4,9 @@ module AmazonDrs
   class Base
     attr_accessor :request_id, :date, :error_type, :error_description_url
 
-    def initialize
+    def initialize(response)
+      @response = response
+      parse_header(response.header)
     end
 
     def parse_headers(headers)
