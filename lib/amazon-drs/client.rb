@@ -59,6 +59,11 @@ module AmazonDrs
       }
       path = '/deviceStatus'
       request_drs(:post, path, headers: headers, params: { 'mostRecentlyActiveDate' =>  convert_to_iso8601(most_recently_active_date) })
+      if response.code == '200'
+        ::AmazonDrs::DeviceStatus.new(response)
+      else
+        ::AmazonDrs::Error.new(response)
+      end
     end
 
     def subscription_info
