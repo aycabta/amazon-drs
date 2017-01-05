@@ -108,12 +108,11 @@ module AmazonDrs
       }
       path = "/replenish/#{slot_id}"
       response = request_drs(:post, path, headers: headers)
-      # TODO: imprement response processing
-      # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-replenish-endpoint
-      # response examples:
-      #   {"message":"Unable to place order - slot : <01234567-89ab-cdef-0123-456789abcdef> is unsubscribed."}
-      #   {"detailCode":"STANDARD_ORDER_PLACED","eventInstanceId":"amzn1.dash.v2.o.xxxxxx......"}
-      #   {"detailCode":"ORDER_INPROGRESS","eventInstanceId":"amzn1.dash.v2.o.xxxxxx......"}
+      if response.code == '200'
+        ::AmazonDrs::Replenish.new(response)
+      else
+        ::AmazonDrs::Error.new(response)
+      end
     end
 
     def get_token
