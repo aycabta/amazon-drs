@@ -7,6 +7,7 @@ require 'date'
 require 'amazon-drs/deregistrate_device'
 require 'amazon-drs/subscription_info'
 require 'amazon-drs/error'
+require 'amazon-drs/slot_status'
 
 class Net::HTTPResponse
     attr_accessor :json
@@ -87,7 +88,12 @@ module AmazonDrs
         'totalQuantityOnHand' => total_quantity_on_hand,
         'lastUseDate' => convert_to_iso8601(last_use_date)
       }
-      request_drs(:post, path, headers: headers, params: params)
+      response = request_drs(:post, path, headers: headers, params: params)
+      if response.code == '200'
+        ::AmazonDrs::SlotStatus.new(response)
+      else
+        ::AmazonDrs::Error.new(response)
+      end
     end
 
     def replenish(slot_id)
