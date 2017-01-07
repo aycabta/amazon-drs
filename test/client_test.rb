@@ -21,6 +21,11 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
       assert_kind_of(AmazonDrs::SubscriptionInfo, ret)
       assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
       assert_kind_of(Time, ret.date)
+      assert_kind_of(Hash, ret.slots)
+      key = ret.slots.keys.first
+      value = ret.slots[key]
+      assert_kind_of(String, key)
+      assert_boolean(value)
     end
   end
 end
