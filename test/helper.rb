@@ -15,5 +15,21 @@ def fixture(file)
   data
 end
 
+def create_client()
+  device = fixture('device.json')
+  jaga = device.json['jaga']
+  client = AmazonDrs::Client.new(jaga['device_model']) do |c|
+    c.authorization_code = device['authorization_code']
+    c.serial = jaga['serial']
+    c.redirect_uri = device['redirect_uri']
+    c.access_token = device['access_token']
+    c.refresh_token = device['refresh_token']
+    c.client_id = 'aaa'
+    c.client_secret = 'secret'
+    c.redirect_uri = device['redirect_uri']
+  end
+  client
+end
+
 WebMock.enable!
 
