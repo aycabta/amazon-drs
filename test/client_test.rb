@@ -61,7 +61,7 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
           }
         )
     end
-    test 'invalid token' do
+    test 'is invalid token' do
       ret = @drs.get_token
       assert_kind_of(AmazonDrs::Error, ret)
       assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
