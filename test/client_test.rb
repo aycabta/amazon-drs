@@ -32,6 +32,19 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
   sub_test_case '#get_token' do
     setup do
       jaga = fixture('device.json').json['jaga']
+      @access_token = 'test'
+      @drs = AmazonDrs::Client.new(jaga['device_model']) do |c|
+        c.access_token = @access_token
+      end
+    end
+    test 'is correct' do
+      ret = @drs.get_token
+      assert_equal(@access_token, ret)
+    end
+  end
+  sub_test_case '#get_token' do
+    setup do
+      jaga = fixture('device.json').json['jaga']
       @drs = AmazonDrs::Client.new(jaga['device_model']) do |c|
         c.client_id = 'aaa'
         c.client_secret = 'secret'
