@@ -2,10 +2,11 @@ require 'time'
 
 module AmazonDrs
   class Base
-    attr_accessor :request_id, :date, :error_type, :error_description_url
+    attr_accessor :status_code, :request_id, :date, :error_type, :error_description_url
 
     def initialize(response)
       @response = response
+      @status_code = response.code.to_i
       parse_header(response.header)
       parse_body(response.body)
     end
