@@ -19,6 +19,7 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
     test 'requests the correct resource' do
       ret = @drs.subscription_info
       assert_kind_of(AmazonDrs::SubscriptionInfo, ret)
+      assert_equal(200, ret.status_code)
       assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
       assert_kind_of(Time, ret.date)
       assert_kind_of(Hash, ret.slots)
