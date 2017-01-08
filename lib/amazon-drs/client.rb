@@ -8,6 +8,7 @@ require 'amazon-drs/deregistrate_device'
 require 'amazon-drs/subscription_info'
 require 'amazon-drs/error'
 require 'amazon-drs/slot_status'
+require 'amazon-drs/access_token'
 
 class Net::HTTPResponse
     attr_accessor :json
@@ -121,6 +122,7 @@ module AmazonDrs
       else
         resp = request_token
         process_token_response(resp)
+        resp
       end
     end
 
@@ -137,11 +139,11 @@ module AmazonDrs
     private :convert_to_iso8601
 
     def process_token_response(resp)
-      if resp.json['error']
+      if resp.kind_of?(AmazonDrs::Error)
         nil
       else
-        @access_token = resp.json['access_token']
-        @refresh_token = resp.json['refresh_token']
+        @access_token = resp.access_token
+        @refresh_token = resp.refresh_token
         @on_new_token.call(@access_token, @refresh_token) if @on_new_token
         @access_token
       end
@@ -155,7 +157,7 @@ module AmazonDrs
       end
       if @access_token.nil?
         token = get_token
-        if token.nil?
+        if resp.kind_of?(AmazonDrs::Error)
           raise 'Failed to get token'
         end
       end
@@ -190,7 +192,12 @@ module AmazonDrs
         client_secret: @client_secret,
         redirect_uri: @redirect_uri
       }
-      request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
+      response = request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
+      if response.code == '200'
+        ::AmazonDrs::AccessToken.new(response)
+      else
+        ::AmazonDrs::Error.new(response)
+      end
     end
     private :request_token
 
