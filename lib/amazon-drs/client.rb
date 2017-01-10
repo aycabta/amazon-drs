@@ -12,7 +12,7 @@ require 'amazon-drs/slot_status'
 require 'amazon-drs/access_token'
 
 class Net::HTTPResponse
-    attr_accessor :json
+  attr_accessor :json
 end
 
 module AmazonDrs
