@@ -229,7 +229,7 @@ module AmazonDrs
         request.body = URI.encode_www_form(params)
       end
       request['Content-Type'] = 'application/x-www-form-urlencoded'
-      request['User-Agent'] = @user_agent
+      request['User-Agent'] = user_agent
       headers.each do |key, value|
         request[key] = value
       end
