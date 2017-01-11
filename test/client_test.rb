@@ -73,5 +73,37 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
       assert_equal('http://internal.amazon.com/coral/com.amazon.panda/', ret.error_description_url)
     end
   end
+  sub_test_case '#subscription_info' do
+    setup do
+      jaga = fixture('device.json').json['jaga']
+      @drs = AmazonDrs::Client.new(jaga['device_model']) do |c|
+        c.authorization_code = 'dummy'
+        c.access_token = 'dummy'
+        c.client_id = 'aaa'
+        c.client_secret = 'secret'
+      end
+      access_token_invalid = fixture('access_token_invalied.json')
+      stub_request(:get, "https://dash-replenishment-service-na.amazon.com/subscriptionInfo")
+        .to_return(
+          body: access_token_invalid,
+          status: 400,
+          headers: {
+            'X-Amzn-Requestid' => 'd296d296-d1d1-1111-8c8c-0b43820b4382',
+            'X-Amz-Date' => 'Mon, 02 Jan 2017 22:35:53 GMT',
+            'X-Amzn-Errortype' => 'InvalidTokenException:http://internal.amazon.com/coral/com.amazon.parkeraccioservice/'
+          }
+        )
+    end
+    test 'is invalid token' do
+      ret = @drs.subscription_info
+      assert_kind_of(AmazonDrs::Error, ret)
+      assert_equal(400, ret.status_code)
+      assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
+      assert_kind_of(Time, ret.date)
+      assert_kind_of(String, ret.message)
+      assert_equal('InvalidTokenException', ret.error_type)
+      assert_equal('http://internal.amazon.com/coral/com.amazon.parkeraccioservice/', ret.error_description_url)
+    end
+  end
 end
 
