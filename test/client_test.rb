@@ -67,6 +67,8 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
       assert_equal(400, ret.status_code)
       assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
       assert_kind_of(Time, ret.date)
+      assert_kind_of(String, ret.error)
+      assert_kind_of(String, ret.error_description)
       assert_equal('OA2InvalidRequestException', ret.error_type)
       assert_equal('http://internal.amazon.com/coral/com.amazon.panda/', ret.error_description_url)
     end
