@@ -157,7 +157,7 @@ module AmazonDrs
         raise 'Authorization Code is not set'
       end
       if @access_token.nil?
-        token = get_token
+        get_token
         if resp.kind_of?(AmazonDrs::Error)
           raise 'Failed to get token'
         end
