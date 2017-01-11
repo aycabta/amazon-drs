@@ -82,7 +82,7 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
         c.client_id = 'aaa'
         c.client_secret = 'secret'
       end
-      access_token_invalid = fixture('access_token_invalied.json')
+      access_token_invalid = fixture('access_token_invalid.json')
       stub_request(:get, "https://dash-replenishment-service-na.amazon.com/subscriptionInfo")
         .to_return(
           body: access_token_invalid,
