@@ -64,6 +64,7 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
     test 'is invalid token' do
       ret = @drs.get_token
       assert_kind_of(AmazonDrs::Error, ret)
+      assert_equal(400, ret.status_code)
       assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
       assert_kind_of(Time, ret.date)
       assert_equal('OA2InvalidRequestException', ret.error_type)
