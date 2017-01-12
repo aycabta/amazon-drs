@@ -37,7 +37,7 @@ module AmazonDrs
     end
 
     def user_agent
-      @user_agent ||= "AdashRubyGem/#{AmazonDrs::VERSION}/#{RUBY_DESCRIPTION}"
+      @user_agent ||= "AmazonDrsRubyGem/#{AmazonDrs::VERSION}/#{RUBY_DESCRIPTION}"
     end
 
     def deregistrate_device
