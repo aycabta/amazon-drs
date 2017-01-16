@@ -67,8 +67,9 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
       assert_equal(400, ret.status_code)
       assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
       assert_kind_of(Time, ret.date)
-      assert_kind_of(String, ret.error)
-      assert_kind_of(String, ret.error_description)
+      assert_equal('invalid_grant', ret.error)
+      assert_equal('The request has an invalid grant parameter : refresh_token', ret.error_description)
+      assert_equal('ERROR invalid_grant: The request has an invalid grant parameter : refresh_token', ret.inspect)
       assert_equal('OA2InvalidRequestException', ret.error_type)
       assert_equal('http://internal.amazon.com/coral/com.amazon.panda/', ret.error_description_url)
     end
@@ -100,7 +101,8 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
       assert_equal(400, ret.status_code)
       assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
       assert_kind_of(Time, ret.date)
-      assert_kind_of(String, ret.message)
+      assert_equal('Invalid token', ret.message)
+      assert_equal('ERROR: Invalid token', ret.inspect)
       assert_equal('InvalidTokenException', ret.error_type)
       assert_equal('http://internal.amazon.com/coral/com.amazon.parkeraccioservice/', ret.error_description_url)
     end

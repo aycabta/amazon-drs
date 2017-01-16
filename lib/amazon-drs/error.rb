@@ -12,10 +12,12 @@ module AmazonDrs
     end
 
     def inspect
-      resp = ''
-      resp += "ERROR @error: " if @error
-      resp += @message if @message
-      resp += @error_description if @error_description
+      resp = 'ERROR'
+      resp += " #{@error}" if instance_variable_defined?(:@error) && @error
+      resp += ': '
+      resp += @message if instance_variable_defined?(:@message) && @message
+      resp += @error_description if instance_variable_defined?(:@error_description) && @error_description
+      resp
     end
 
     def to_s
