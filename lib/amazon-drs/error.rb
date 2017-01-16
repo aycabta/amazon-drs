@@ -10,6 +10,17 @@ module AmazonDrs
       @error = json['error'] if json['error']
       @error_description = json['error_description'] if json['error_description']
     end
+
+    def inspect
+      resp = ''
+      resp += "ERROR @error: " if @error
+      resp += @message if @message
+      resp += @error_description if @error_description
+    end
+
+    def to_s
+      inspect
+    end
   end
 end
 
