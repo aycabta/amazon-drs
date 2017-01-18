@@ -7,12 +7,12 @@ module AmazonDrs
     def initialize(response)
       @response = response
       @status_code = response.code.to_i
-      parse_header(response.header)
+      parse_header(response)
       parse_body(response.body)
     end
 
-    def parse_header(headers)
-      headers.each do |key, value|
+    def parse_header(response)
+      response.each do |key, value|
         case key.downcase
         when 'x-amzn-errortype'
           # Value examples:
