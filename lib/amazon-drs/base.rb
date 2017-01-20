@@ -36,5 +36,16 @@ module AmazonDrs
       # abstract
     end
     private :parse_body
+
+    def inspect
+      if @status_code == 200
+        self.class.name
+      else
+        resp = "ERROR #{@status_code} : "
+        resp += @message if instance_variable_defined?(:@message) && @message
+        resp += @error_description if instance_variable_defined?(:@error_description) && @error_description
+        resp
+      end
+    end
   end
 end
