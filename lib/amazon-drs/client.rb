@@ -11,10 +11,6 @@ require 'amazon-drs/error'
 require 'amazon-drs/slot_status'
 require 'amazon-drs/access_token'
 
-class Net::HTTPResponse
-  attr_accessor :json
-end
-
 module AmazonDrs
   class Client
     attr_accessor :device_model, :serial, :authorization_code, :redirect_uri, :access_token, :refresh_token, :client_id, :client_secret
@@ -163,7 +159,8 @@ module AmazonDrs
         end
       end
       resp = request(method, url, headers: headers, params: params)
-      if resp.code == '400' && resp.json['message'] == 'Invalid token' && @refresh_token
+      json = JSON.parse(resp.body)
+      if resp.code == '400' && json['message'] == 'Invalid token' && @refresh_token
         resp = refresh_access_token
         process_token_response(resp)
         request(method, url, headers: headers, params: params)
@@ -238,9 +235,7 @@ module AmazonDrs
       end
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      response = http.request(request)
-      response.json = JSON.parse(response.body)
-      response
+      http.request(request)
     end
     private :request
   end
