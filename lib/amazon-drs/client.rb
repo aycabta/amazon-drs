@@ -228,7 +228,7 @@ module AmazonDrs
       request['Content-Type'] = 'application/x-www-form-urlencoded'
       request['User-Agent'] = user_agent
       headers.each do |key, value|
-        request[key] = value
+        request[key.to_s] = value
       end
       if not @access_token.nil?
         request["Authorization"] = "Bearer #{@access_token}"
