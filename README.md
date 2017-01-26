@@ -29,3 +29,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/aycabt
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+## Badges
+
+[![Build Status](https://travis-ci.org/aycabta/amazon-drs.svg)](https://travis-ci.org/aycabta/amazon-drs)
