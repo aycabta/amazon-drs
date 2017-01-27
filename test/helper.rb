@@ -32,4 +32,3 @@ def create_client()
 end
 
 WebMock.enable!
-

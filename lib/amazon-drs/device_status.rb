@@ -4,4 +4,3 @@ module AmazonDrs
   class DeviceStatus < Base
   end
 end
-

@@ -4,4 +4,3 @@ module AmazonDrs
   class SlotStatus < Base
   end
 end
-

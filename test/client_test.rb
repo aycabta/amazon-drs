@@ -108,4 +108,3 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
     end
   end
 end
-
