@@ -4,10 +4,10 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'amazon-drs/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "amazon-drs"
+  spec.name          = 'amazon-drs'
   spec.version       = AmazonDrs::VERSION
-  spec.authors       = ["Code Ass"]
-  spec.email         = ["aycabta@gmail.com"]
+  spec.authors       = ['Code Ass']
+  spec.email         = ['aycabta@gmail.com']
 
   spec.summary       = %q{amazon-drs is for Amazon Dash Replenishment Service}
   spec.description   = %Q{amazon-drs is for Amazon Dash Replenishment Service.\nYou can use this after authorized by Login with Amazon.\n}
