@@ -15,7 +15,7 @@ module AmazonDrs
       response.each do |key, value|
         case key.downcase
         when 'x-amzn-errortype'
-          # Value examples:
+          # Examples:
           #   InvalidTokenException:http://internal.amazon.com/coral/com.amazon.parkeraccioservice/
           #   OA2InvalidRequestException:http://internal.amazon.com/coral/com.amazon.panda/
           @error_type, @error_description_url = value.split(':', 2)
