@@ -31,4 +31,5 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## Badges
 
-[![Build Status](https://travis-ci.org/aycabta/amazon-drs.svg)](https://travis-ci.org/aycabta/amazon-drs)
+- [![Build Status](https://travis-ci.org/aycabta/amazon-drs.svg)](https://travis-ci.org/aycabta/amazon-drs)
+- [![Build Status](https://ci.appveyor.com/api/projects/status/github/aycabta/amazon-drs?branch=master&svg=true)](https://ci.appveyor.com/project/aycabta/amazon-drs)
