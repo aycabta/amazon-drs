@@ -10,6 +10,7 @@ require 'amazon-drs/replenish'
 require 'amazon-drs/error'
 require 'amazon-drs/slot_status'
 require 'amazon-drs/access_token'
+# TODO support testOrders https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-canceltestorder-endpoint
 
 module AmazonDrs
   class Client
