@@ -11,6 +11,7 @@ require 'amazon-drs/error'
 require 'amazon-drs/slot_status'
 require 'amazon-drs/access_token'
 # TODO support testOrders https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-canceltestorder-endpoint
+require 'amazon-drs/test_orders'
 
 module AmazonDrs
   class Client
@@ -109,6 +110,21 @@ module AmazonDrs
       response = request_drs(:post, path, headers: headers)
       if response.code == '200'
         ::AmazonDrs::Replenish.new(response)
+      else
+        ::AmazonDrs::Error.new(response)
+      end
+    end
+
+    # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-canceltestorder-endpoint
+    def test_orders(slot_id)
+      headers = {
+        'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsCancelTestOrdersResult@1.0',
+        'x-amzn-type-version': 'com.amazon.dash.replenishment.DrsCancelTestOrdersInput@1.0'
+      }
+      path = "/testOrders/#{slot_id}"
+      response = request_drs(:delete, path, headers: headers)
+      if response.code == '200'
+        ::AmazonDrs::TestOrders.new(response)
       else
         ::AmazonDrs::Error.new(response)
       end
