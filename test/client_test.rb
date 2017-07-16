@@ -1,5 +1,6 @@
 require 'helper'
 require 'amazon-drs'
+require 'json'
 
 class AmazonDrs::Client::Test < Test::Unit::TestCase
   sub_test_case '#subscription_info' do
@@ -105,6 +106,34 @@ class AmazonDrs::Client::Test < Test::Unit::TestCase
       assert_equal('ERROR: Invalid token', ret.inspect)
       assert_equal('InvalidTokenException', ret.error_type)
       assert_equal('http://internal.amazon.com/coral/com.amazon.parkeraccioservice/', ret.error_description_url)
+    end
+  end
+  sub_test_case '#test_orders' do
+    setup do
+      @drs = create_client
+      test_orders = fixture('test_orders.json')
+      test_orders_json = JSON.parse(test_orders)
+      @slot_id = test_orders_json['slotOrderStatuses'][0]['slotId']
+      stub_request(:delete, %r{^https://dash-replenishment-service-na.amazon.com/testOrders/.+})
+        .to_return(
+          body: test_orders,
+          status: 200,
+          headers: {
+            'X-Amzn-Requestid' => 'd296d296-d1d1-1111-8c8c-0b43820b4382',
+            'X-Amz-Date' => 'Mon, 02 Jan 2017 22:35:53 GMT'
+          }
+        )
+    end
+    test 'requests the correct resource' do
+      ret = @drs.test_orders(@slot_id)
+      assert_kind_of(AmazonDrs::TestOrders, ret)
+      assert_equal(200, ret.status_code)
+      assert_match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/, ret.request_id)
+      assert_kind_of(Time, ret.date)
+      assert_kind_of(Array, ret.slot_order_statuses)
+      slot_order_status = ret.slot_order_statuses.first
+      assert_kind_of(String, slot_order_status.order_status)
+      assert_kind_of(String, slot_order_status.slot_id)
     end
   end
 end

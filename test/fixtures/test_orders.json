@@ -1,0 +1,12 @@
+{
+  "slotOrderStatuses": [
+    {
+      "orderStatus": "NO_ORDER_IN_PROGRESS",
+      "slotId": "slot1"
+    },
+    {
+      "orderStatus": "NO_ORDER_IN_PROGRESS",
+      "slotId": "slot2"
+    }
+  ]
+}
