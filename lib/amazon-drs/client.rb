@@ -100,6 +100,7 @@ module AmazonDrs
       end
     end
 
+    # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-replenish-endpoint
     def replenish(slot_id)
       headers = {
         'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsReplenishResult@1.0',
