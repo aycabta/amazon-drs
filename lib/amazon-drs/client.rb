@@ -79,6 +79,7 @@ module AmazonDrs
       end
     end
 
+    # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-slotstatus-endpoint
     def slot_status(slot_id, expected_replenishment_date, remaining_quantity_in_unit, original_quantity_in_unit, total_quantity_on_hand, last_use_date)
       headers = {
         'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsSlotStatusResult@1.0',
