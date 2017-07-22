@@ -141,7 +141,7 @@ module AmazonDrs
       end
     end
 
-    def convert_to_iso8601(input)
+    private def convert_to_iso8601(input)
       case input
       when Date, Time
         input.iso8601
@@ -151,9 +151,8 @@ module AmazonDrs
         input.to_s
       end
     end
-    private :convert_to_iso8601
 
-    def process_token_response(resp)
+    private def process_token_response(resp)
       if resp.kind_of?(AmazonDrs::Error)
         nil
       else
@@ -163,9 +162,8 @@ module AmazonDrs
         @access_token
       end
     end
-    private :process_token_response
 
-    def request_drs(method, path, headers: {}, params: {})
+    private def request_drs(method, path, headers: {}, params: {})
       url = "https://#{@drs_host}#{path}"
       if @authorization_code.nil?
         raise 'Authorization Code is not set'
@@ -186,9 +184,8 @@ module AmazonDrs
         resp
       end
     end
-    private :request_drs
 
-    def refresh_access_token
+    private def refresh_access_token
       params = {
         grant_type: 'refresh_token',
         refresh_token: @refresh_token,
@@ -198,9 +195,8 @@ module AmazonDrs
       @access_token = nil
       request(:post, "https://#{@amazon_host}/auth/o2/token", params: params)
     end
-    private :refresh_access_token
 
-    def request_token
+    private def request_token
       params = {
         grant_type: 'authorization_code',
         code: @authorization_code,
@@ -215,9 +211,8 @@ module AmazonDrs
         ::AmazonDrs::Error.new(response)
       end
     end
-    private :request_token
 
-    def request(method, url, headers: {}, params: {})
+    private def request(method, url, headers: {}, params: {})
       uri = URI.parse(url)
       if params.any?{ |key, value| value.is_a?(Enumerable) }
         converted_params = []
@@ -255,6 +250,5 @@ module AmazonDrs
       http.use_ssl = true
       http.request(request)
     end
-    private :request
   end
 end

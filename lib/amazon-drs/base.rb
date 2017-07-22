@@ -11,7 +11,7 @@ module AmazonDrs
       parse_body(response.body)
     end
 
-    def parse_header(response)
+    private def parse_header(response)
       response.each do |key, value|
         case key.downcase
         when 'x-amzn-errortype'
@@ -30,12 +30,10 @@ module AmazonDrs
         end
       end
     end
-    private :parse_header
 
-    def parse_body(body)
+    private def parse_body(body)
       # abstract
     end
-    private :parse_body
 
     def inspect
       if @status_code == 200
