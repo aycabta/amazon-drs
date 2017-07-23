@@ -65,6 +65,7 @@ module AmazonDrs
       end
     end
 
+    # https://developer.amazon.com/public/solutions/devices/dash-replenishment-service/docs/dash-getsubscriptioninfo-endpoint
     def subscription_info
       headers = {
         'x-amzn-accept-type': 'com.amazon.dash.replenishment.DrsSubscriptionInfoResult@1.0',
