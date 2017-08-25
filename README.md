@@ -20,6 +20,21 @@ Or install it yourself as:
 
 ## Usage
 
+```ruby
+# Please use access_token what is prepared beforehand:
+# https://rubygems.org/gems/omniauth-amazon
+client = AmazonDrs::Client.new('device_model') do |c|
+  c.authorization_code = 'authorization_code'
+  c.serial = 'serial'
+  c.redirect_uri = 'http://redirect_uri/'
+  c.access_token = 'access_token'
+  c.refresh_token = 'refresh_token'
+  c.client_id = 'aaa'
+  c.client_secret = 'secret'
+end
+@drs.subscription_info
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/aycabta/amazon-drs.
